@@ -186,3 +186,19 @@ luego mediante la consola de comandos puede cambiar el "init"
 ```
 npx prisma migrate dev --name init
 ```
+
+
+## SEED
+para importar datos desde la carpeta seed
+cree su acchivo de datos e importe el el archivvo seed.ts
+
+y ejecute el comando
+```
+npx prisma db seed
+```
+
+## RESET BD
+y ejecute el comando
+```
+npx prisma migrate reset
+```
