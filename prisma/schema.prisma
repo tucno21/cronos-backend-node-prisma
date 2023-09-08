@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id       Int    @id @default(autoincrement())
+  nombre   String @db.VarChar(60)
+  email    String @db.VarChar(60)
+  password String @db.VarChar(60)
+  imagen   String @db.VarChar(120)
+  blogs    Blog[] // Indica que un usuario puede tener varios blogs relacionados
+}
+
+model Blog {
+  id        Int        @id @default(autoincrement())
+  titulo    String     @db.VarChar(255)
+  contenido String?
+  userId    Int
+  autor     Usuario    @relation(fields: [userId], references: [id]) //Indica que el campo "userId" en el modelo "Blog" se relaciona con el campo "id" en el modelo "Usuario". Esto significa que cada blog tiene un autor asociado, que es un usuario
+  etiquetas Etiqueta[] @relation("BlogToEtiqueta") //Indica que un blog puede tener múltiples etiquetas asociadas mediante una relación llamada "BlogToEtiqueta".
+  createdAt DateTime   @default(now()) // fecha y hora (DateTime) con un valor predeterminado
+  updateAt  DateTime   @updatedAt //se actualiza automáticamente cuando se modifica un registro
+}
+
+model Etiqueta {
+  id     Int    @id @default(autoincrement())
+  nombre String @db.VarChar(60)
+  blogs  Blog[] @relation("BlogToEtiqueta") //una etiqueta puede estar asociada a varios blogs.
+}
